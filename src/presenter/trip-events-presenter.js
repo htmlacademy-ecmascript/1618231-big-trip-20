@@ -5,26 +5,29 @@ import EventsItemView from '../view/event-item-view';
 import EventFormView from '../view/event-form-view';
 import PointContentView from '../view/point-content-view';
 
-const AMOUNT_ELEMENTS = 3;
+
 export default class TripEventsPresenter {
   tripPoints = [];
   eventsList = new EventsListView();
   eventsItem = new EventsItemView();
 
-  constructor({container}) {
+  constructor({container, pointsModel}) {
     this.container = container;
+    this.pointsModel = pointsModel;
   }
 
   init() {
+    this.pointsList = [...this.pointsModel.getPoints()];
+
     render(new TripSortView(), this.container);
     render(this.eventsList, this.container);
     render(this.eventsItem, this.eventsList.getElement());
-    render(new EventFormView(), this.eventsItem.getElement());
+    render(new EventFormView({card: this.pointsList[1]}), this.eventsItem.getElement());
 
-    for (let i = 0; i < AMOUNT_ELEMENTS; i++) {
+    for (let i = 0; i < this.pointsList.length; i++) {
       this.tripPoints[i] = new EventsItemView();
       render(this.tripPoints[i], this.eventsList.getElement());
-      render(new PointContentView(), this.tripPoints[i].getElement());
+      render(new PointContentView({point: this.pointsList[i]}), this.tripPoints[i].getElement());
     }
   }
 }
