@@ -1,7 +1,7 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import { getDateOptions} from '../utils';
 
-const createPointOfferListTemplate = (options)=> options.offers.map((item) => `<li class="event__offer">
+const createPointOfferList = (options)=> options.offers.map((item) => `<li class="event__offer">
   <span class="event__offer-title">${item.title}</span>
   &plus;&euro;&nbsp;
   <span class="event__offer-price">${item.price}</span>
@@ -11,7 +11,7 @@ const createPointContentTemplate = (point) => {
   const {type, destination, dateFrom, dateTo, basePrice, offers} = point;
   const {name} = destination;
   const date = getDateOptions(dateFrom, dateTo);
-  const optionsList = createPointOfferListTemplate(offers);
+  const optionsList = createPointOfferList(offers);
   return `<div class="event">
 <time class="event__date" datetime="2019-03-18">${date.day}</time>
 <div class="event__type">
@@ -34,35 +34,36 @@ const createPointContentTemplate = (point) => {
 ${optionsList}
 </ul>
 <button class="event__favorite-btn event__favorite-btn--active" type="button">
-  <span class="visually-hidden">Add to favorite</span>
-  <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
-    <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
-  </svg>
+<span class="visually-hidden">Add to favorite</span>
+<svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
+  <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
+</svg>
 </button>
 <button class="event__rollup-btn" type="button">
-  <span class="visually-hidden">Open event</span>
+<span class="visually-hidden">Open event</span>
 </button>
 </div>`;
 };
 
-export default class PointContentView {
-  constructor({point}) {
-    this.point = point;
+export default class PointContentView extends AbstractView {
+  #showEditForm = null;
+  #editButton = null;
+  #point = null;
+  #addFavorite = null;
+  constructor({point, showEditForm}) {
+    super();
+    this.#point = point;
+    this.#editButton = this.element.querySelector('.event__rollup-btn');
+    this.#editButton.addEventListener('click', this.#onEditButtonClick);
+    this.#showEditForm = showEditForm;
   }
 
-  getTemplate() {
-    return createPointContentTemplate(this.point);
+  get template() {
+    return createPointContentTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
-  }
+  #onEditButtonClick = (evt) => {
+    evt.preventDefault();
+    this.#showEditForm();
+  };
 }

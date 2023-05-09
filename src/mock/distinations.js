@@ -6,7 +6,7 @@ const distinations = [
     А не то еще глупее Ты найдешь на них ответ.
     Если глупые вопросы Появились в голове,
     Задавай их сразу взрослым. Пусть у них трещат мозги.`,
-    pictures: ['https://loremflickr.com/248/152?random=1',
+    photos: ['https://loremflickr.com/248/152?random=1',
       'https://loremflickr.com/248/152?random=2',
       'https://loremflickr.com/248/152?random=3',
       'https://loremflickr.com/248/152?random=4']

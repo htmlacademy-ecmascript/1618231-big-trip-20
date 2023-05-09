@@ -25,6 +25,7 @@ const getEventDuration = (start, end) => {
   return `${eventDuration.format(DAY_FORMAT)}${DAY} ${eventDuration.format(HOUR_FORMAT)}${HOUR} ${eventDuration.format(MINUTE_FORMAT)}${MINUTE}`;
 };
 
+
 const getDateOptions = (start, end) => {
   const startEvent = dayjs(start);
   const endEvent = dayjs(end);
@@ -38,4 +39,14 @@ const getDateOptions = (start, end) => {
   };
 };
 
-export {getRandomElement, getDateOptions};
+const getFullDataOptions = (start, end) => {
+  const startEvent = dayjs(start);
+  const endEvent = dayjs(end);
+  const DATE_FORMAT = 'DD/MM/YY HH:mm';
+  return {
+    start: startEvent.format(DATE_FORMAT),
+    end: endEvent.format(DATE_FORMAT),
+  };
+};
+
+export {getRandomElement, getDateOptions, getFullDataOptions};
