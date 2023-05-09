@@ -1,4 +1,4 @@
-import { createElement } from '../render';
+import AbstractView from '../framework/view/abstract-view';
 import dayjs from 'dayjs';
 
 const DATE_FORMAT = 'DD/MM/YY hh:mm';
@@ -21,7 +21,7 @@ const getEventAvailableOffers = (options) => options.offers.map((item) => `
     </label>
     </div>`).join('');
 
-const getEventPhoto = (pictures) => pictures.map((item) =>`<img class="event__photo" src="${item}" alt="Event photo">
+const getDestinationPhoto = (pictures) => pictures.map((item) =>`<img class="event__photo" src="${item}" alt="Event photo">
     `).join('');
 
 const createFormTemplate = ({card}) => {
@@ -127,7 +127,7 @@ const createFormTemplate = ({card}) => {
 
     <div class="event__photos-container">
       <div class="event__photos-tape">
-      ${getEventPhoto(photos)}
+      ${getDestinationPhoto(photos)}
       </div>
     </div>
   </section>
@@ -135,24 +135,13 @@ const createFormTemplate = ({card}) => {
 </form>`;
 };
 
-export default class EventFormView {
+export default class EventFormView extends AbstractView {
   constructor(card) {
+    super();
     this.card = card;
   }
 
-  getTemplate() {
+  get template() {
     return createFormTemplate(this.card);
-  }
-
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
-    }
-
-    return this.element;
-  }
-
-  removeElement() {
-    this.element = null;
   }
 }
