@@ -1,4 +1,0 @@
-const AMOUNT_ELEMENTS = 5;
-
-export {AMOUNT_ELEMENTS};
-

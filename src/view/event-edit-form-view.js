@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { getFullDataOptions } from '../utils';
+import { getDateOptions } from '../utils/utils';
 
 const createPointOfferList = (options) => options.offers.map((item) => `<div class="event__offer-selector">
 <input class="event__offer-checkbox  visually-hidden" id="event-offer-luggage-1" type="checkbox" name="event-offer-luggage" checked>
@@ -13,7 +13,7 @@ const createPointOfferList = (options) => options.offers.map((item) => `<div cla
 const getEventEditFormView = (point) => {
   const {type, destination, dateFrom, dateTo, basePrice, offers} = point;
   const {name, description} = destination;
-  const dateOptions = getFullDataOptions(dateFrom, dateTo);
+  const dateOptions = getDateOptions(dateFrom, dateTo);
   const optionsList = createPointOfferList(offers);
 
   return `<form class="event event--edit" action="#" method="post">
@@ -91,10 +91,10 @@ const getEventEditFormView = (point) => {
 
   <div class="event__field-group  event__field-group--time">
     <label class="visually-hidden" for="event-start-time-1">From</label>
-    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateOptions.start}">
+    <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateOptions.startDate}">
     &mdash;
     <label class="visually-hidden" for="event-end-time-1">To</label>
-    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateOptions.end}">
+    <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateOptions.endDate}">
   </div>
 
   <div class="event__field-group  event__field-group--price">
@@ -132,11 +132,16 @@ const getEventEditFormView = (point) => {
 export default class EventEditFormView extends AbstractView {
   #point = null;
   #onFormSubmit = null;
-  constructor({point, onFormSubmit}) {
+  #editButton = null;
+  #closeEditForm = null;
+  constructor({point, onFormSubmit, closeEditForm}) {
     super();
     this.#point = point;
     this.#onFormSubmit = onFormSubmit;
     this.element.addEventListener('submit', this.#onSubmitButtonClick);
+    this.#closeEditForm = closeEditForm;
+    this.#editButton = this.element.querySelector('.event__rollup-btn');
+    this.#editButton.addEventListener('click', this.#onEditButtonClick);
   }
 
   get template() {
@@ -146,5 +151,10 @@ export default class EventEditFormView extends AbstractView {
   #onSubmitButtonClick = (evt) => {
     evt.preventDefault();
     this.#onFormSubmit();
+  };
+
+  #onEditButtonClick = (evt) => {
+    evt.preventDefault();
+    this.#closeEditForm();
   };
 }

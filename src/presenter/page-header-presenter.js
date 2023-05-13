@@ -5,15 +5,21 @@ import { render, RenderPosition } from '../framework/render';
 
 
 export default class PageHeaderPresenter {
-  #filterContainer = document.querySelector('.trip-controls__filters');
   #container = null;
-  constructor({container}) {
+  #filterContainer = null;
+  #pointsModel = null;
+  #pointsList = null;
+  constructor({container, filterContainer, pointsModel}) {
     this.#container = container;
+    this.#filterContainer = filterContainer;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
+    this.#pointsList = [...this.#pointsModel.points];
+
     render(new TripInfoView, this.#container, RenderPosition.AFTERBEGIN);
-    render(new TripFilterView, this.#filterContainer);
+    render(new TripFilterView(this.#pointsList), this.#filterContainer);
     render(new EventAddBtnView, this.#container);
   }
 }
