@@ -2,12 +2,13 @@ import AbstractView from '../framework/view/abstract-view';
 import { generateFilters } from '../mock/filter';
 
 const createFilterItem = (filters) => {
+  console.log(filters);
   const fistElement = filters[0].type;
   return filters.map(({type, hasPoint}) => `<div class="trip-filters__filter">
 <input id="filter-${type}"
  class="trip-filters__filter-input  visually-hidden"
   type="radio" name="trip-filter" value="${type}"
-  ${!hasPoint ? 'disadled' : ''}
+  ${!hasPoint ? 'disabled' : ''}
   ${type === fistElement ? 'checked' : ''}>
 <label class="trip-filters__filter-label" for="filter-${type}">${type}</label>
 </div>`).join('');
