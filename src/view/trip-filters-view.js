@@ -2,7 +2,6 @@ import AbstractView from '../framework/view/abstract-view';
 import { generateFilters } from '../mock/filter';
 
 const createFilterItem = (filters) => {
-  console.log(filters);
   const fistElement = filters[0].type;
   return filters.map(({type, hasPoint}) => `<div class="trip-filters__filter">
 <input id="filter-${type}"
