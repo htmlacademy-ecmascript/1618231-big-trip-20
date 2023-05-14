@@ -55,6 +55,9 @@ export default class TripEventsPresenter {
       onFormSubmit: () => {
         replaceFormToPoint();
         document.removeEventListener('keydown', onEscKeyDown);
+      },
+      closeEditForm: () => {
+        replaceFormToPoint();
       }
     });
 
@@ -65,6 +68,7 @@ export default class TripEventsPresenter {
     function replaceFormToPoint() {
       replace(pointContent, pointEditContent);
     }
+
     render(tripPoint, this.eventsList.element);
     render(pointContent, tripPoint.element);
   }

@@ -1,5 +1,5 @@
 import AbstractView from '../framework/view/abstract-view';
-import { getDateOptions} from '../utils';
+import { getDateOptions} from '../utils/utils';
 
 const createPointOfferList = (options)=> options.offers.map((item) => `<li class="event__offer">
   <span class="event__offer-title">${item.title}</span>
@@ -7,11 +7,21 @@ const createPointOfferList = (options)=> options.offers.map((item) => `<li class
   <span class="event__offer-price">${item.price}</span>
 </li>`).join('');
 
+const createFavoriteButton = (favorite) =>{
+  if (favorite) {
+    return 'event__favorite-btn--active';
+  } else {
+    return '';
+  }
+};
+
 const createPointContentTemplate = (point) => {
-  const {type, destination, dateFrom, dateTo, basePrice, offers} = point;
+  const {type, destination, dateFrom, dateTo, basePrice, offers, isFavorite} = point;
   const {name} = destination;
   const date = getDateOptions(dateFrom, dateTo);
   const optionsList = createPointOfferList(offers);
+  const favoriteButton = createFavoriteButton(isFavorite);
+
   return `<div class="event">
 <time class="event__date" datetime="2019-03-18">${date.day}</time>
 <div class="event__type">
@@ -33,7 +43,7 @@ const createPointContentTemplate = (point) => {
 <ul class="event__selected-offers">
 ${optionsList}
 </ul>
-<button class="event__favorite-btn event__favorite-btn--active" type="button">
+<button class="event__favorite-btn ${favoriteButton}" type="button">
 <span class="visually-hidden">Add to favorite</span>
 <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
   <path d="M14 21l-8.22899 4.3262 1.57159-9.1631L.685209 9.67376 9.8855 8.33688 14 0l4.1145 8.33688 9.2003 1.33688-6.6574 6.48934 1.5716 9.1631L14 21z"/>
@@ -49,7 +59,6 @@ export default class PointContentView extends AbstractView {
   #showEditForm = null;
   #editButton = null;
   #point = null;
-  #addFavorite = null;
   constructor({point, showEditForm}) {
     super();
     this.#point = point;
