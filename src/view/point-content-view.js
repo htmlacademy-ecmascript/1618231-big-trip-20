@@ -1,6 +1,7 @@
 import AbstractView from '../framework/view/abstract-view';
 import { getDateOptions} from '../utils/utils';
 
+
 const createPointOfferList = (options)=> options.offers.map((item) => `<li class="event__offer">
   <span class="event__offer-title">${item.title}</span>
   &plus;&euro;&nbsp;
@@ -58,21 +59,30 @@ ${optionsList}
 export default class PointContentView extends AbstractView {
   #showEditForm = null;
   #editButton = null;
+  #favoriteButton = null;
   #point = null;
-  constructor({point, showEditForm}) {
+  #changeFavoriteButton = null;
+  constructor({point, onEditClick, onFavoriteClick}) {
     super();
     this.#point = point;
+    this.#showEditForm = onEditClick;
+    this.#changeFavoriteButton = onFavoriteClick;
     this.#editButton = this.element.querySelector('.event__rollup-btn');
     this.#editButton.addEventListener('click', this.#onEditButtonClick);
-    this.#showEditForm = showEditForm;
+    this.#favoriteButton = this.element.querySelector('.event__favorite-btn');
+    this.#favoriteButton.addEventListener('click', this.#onFavoriteButtonClick);
   }
 
   get template() {
     return createPointContentTemplate(this.#point);
   }
 
-  #onEditButtonClick = (evt) => {
-    evt.preventDefault();
+  #onEditButtonClick = () => {
     this.#showEditForm();
+  };
+
+  #onFavoriteButtonClick = (evt) => {
+    evt.preventDefault();
+    this.#changeFavoriteButton();
   };
 }
