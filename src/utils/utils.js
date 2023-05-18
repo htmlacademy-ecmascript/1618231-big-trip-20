@@ -37,10 +37,12 @@ const getDateOptions = (start, end) => {
   };
 };
 
+const updatePoint = (points, update) => points.map((point) => point.id === update.id ? update : point);
+
 const isFuture = (point) => dayjs().isBefore(dayjs(point.dateFrom));
 
 const isPresent = (point) => dayjs().isBetween(point.dateFrom, dayjs(point.dateTo));
 
 const isPast = (point) => dayjs().isAfter(dayjs(point.dateTo));
 
-export {getRandomElement, getDateOptions, isFuture, isPresent, isPast};
+export {getRandomElement, getDateOptions, isFuture, isPresent, isPast, updatePoint};

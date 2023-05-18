@@ -131,15 +131,15 @@ const getEventEditFormView = (point) => {
 
 export default class EventEditFormView extends AbstractView {
   #point = null;
-  #onFormSubmit = null;
+  #submitForm = null;
   #editButton = null;
   #closeEditForm = null;
-  constructor({point, onFormSubmit, closeEditForm}) {
+  constructor({point, onSubmitButton, onCloseFormButton}) {
     super();
     this.#point = point;
-    this.#onFormSubmit = onFormSubmit;
+    this.#submitForm = onSubmitButton;
     this.element.addEventListener('submit', this.#onSubmitButtonClick);
-    this.#closeEditForm = closeEditForm;
+    this.#closeEditForm = onCloseFormButton;
     this.#editButton = this.element.querySelector('.event__rollup-btn');
     this.#editButton.addEventListener('click', this.#onEditButtonClick);
   }
@@ -150,7 +150,7 @@ export default class EventEditFormView extends AbstractView {
 
   #onSubmitButtonClick = (evt) => {
     evt.preventDefault();
-    this.#onFormSubmit();
+    this.#submitForm();
   };
 
   #onEditButtonClick = (evt) => {
