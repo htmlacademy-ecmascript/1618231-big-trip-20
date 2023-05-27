@@ -1,5 +1,6 @@
 import AbstractView from '../framework/view/abstract-view';
 import { getDateOptions} from '../utils/utils';
+import { icons } from '../utils/consts';
 
 
 const createPointOfferList = (options)=> options.offers.map((item) => `<li class="event__offer">
@@ -17,16 +18,17 @@ const createFavoriteButton = (favorite) =>{
 };
 
 const createPointContentTemplate = (point) => {
-  const {type, destination, dateFrom, dateTo, basePrice, offers, isFavorite} = point;
+  const {type, destination, dateFrom, dateTo, basePrice, offers, isFavorite, src} = point;
   const {name} = destination;
   const date = getDateOptions(dateFrom, dateTo);
   const optionsList = createPointOfferList(offers);
   const favoriteButton = createFavoriteButton(isFavorite);
+  const pathIcon = src ? src.path : '';
 
   return `<div class="event">
 <time class="event__date" datetime="2019-03-18">${date.day}</time>
 <div class="event__type">
-  <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
+  <img class="event__type-icon" width="42" height="42" src="${pathIcon}" alt="Event type icon">
 </div>
 <h3 class="event__title">${type} ${name}</h3>
 <div class="event__schedule">
@@ -62,9 +64,11 @@ export default class PointContentView extends AbstractView {
   #favoriteButton = null;
   #point = null;
   #changeFavoriteButton = null;
+  #icons = icons;
   constructor({point, onEditClick, onFavoriteClick}) {
     super();
     this.#point = point;
+    this.#icons = icons;
     this.#showEditForm = onEditClick;
     this.#changeFavoriteButton = onFavoriteClick;
     this.#editButton = this.element.querySelector('.event__rollup-btn');

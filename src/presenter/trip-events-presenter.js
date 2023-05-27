@@ -23,6 +23,9 @@ export default class TripEventsPresenter {
 
   init() {
     this.#pointsList = [...this.#pointsModel.points];
+    this.#pointsList.forEach((point) => {
+      point.id = nanoid();
+    });
     render(new TripSortView(), this.#container);
     render(this.#eventsList, this.#container);
     // render(this.#eventsItem, this.#eventsList.element);
@@ -36,9 +39,10 @@ export default class TripEventsPresenter {
   #renderPoint(point) {
     const pointPresenter = new PointPresenter({listContainer: this.#eventsList.element,
       onDataChange: this.#changePointContent,
-      onModeChange: this.#handleModeChange,});
+      onModeChange: this.#handleModeChange,
+      pointsList: this.#pointsList});
     pointPresenter.init(point);
-    this.#pointPresenters.set(point.id = nanoid(), pointPresenter);
+    this.#pointPresenters.set(point.id, pointPresenter);
   }
 
   #clearPointsList() {
